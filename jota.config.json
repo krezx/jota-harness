@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "checks": [
+    { "name": "harness-tests", "stage": "fast", "command": ["npm", "test"] }
+  ]
+}

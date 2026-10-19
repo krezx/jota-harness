@@ -1,0 +1,17 @@
+{
+  "name": "@jota-harness/cli",
+  "version": "0.1.0",
+  "description": "Bases de desarrollo y flujo de trabajo compartido para agentes de IA",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krezx/jota-harness.git"
+  },
+  "homepage": "https://github.com/krezx/jota-harness#readme",
+  "bugs": { "url": "https://github.com/krezx/jota-harness/issues" },
+  "bin": { "jota": "./bin/jota.js" },
+  "engines": { "node": ">=20" },
+  "files": ["bin", "src", "templates", "README.md", "LICENSE"],
+  "scripts": { "start": "node ./bin/jota.js", "test": "node --test" },
+  "license": "MIT"
+}
