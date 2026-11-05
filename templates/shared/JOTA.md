@@ -36,6 +36,10 @@ Si el contexto está incompleto, inspecciona el proyecto y completa los hechos c
 4. **Verificar.** Configura los comandos reales del proyecto en `jota.config.json`, reutilizando los existentes. Ejecuta `jota verify` durante el trabajo y `jota verify --full` antes de darlo por terminado. Añade pruebas que cubran comportamiento nuevo o regresiones relevantes. No conviertas un check fallido en opcional para cerrar la tarea.
 5. **Documentar y cerrar.** Actualiza el registro con archivos, decisiones, resultados de checks y pendientes. Actualiza `docs/PROJECT.md` si cambió el contexto. Resume al usuario qué cambió, la evidencia y cualquier limitación. Si faltan checks o hay fallos, deja el trabajo pendiente de verificación.
 
+### Revisiones de seguridad
+
+Cuando el usuario solicite una revisión, auditoría o pregunta de seguridad sobre código, carga y sigue la skill `security-audit` instalada en `.agents/skills/security-audit/`, `.claude/skills/security-audit/` o `.opencode/skills/security-audit/`, según el agente. Úsala también en modo de orientación para revisiones enfocadas; reserva el flujo completo de seis fases para auditorías explícitas o solicitudes de informe, tal como define la skill. Si no está instalada, usa el repositorio oficial https://github.com/cloudflare/security-audit-skill como referencia y explica que la skill local falta.
+
 ## Continuidad y límites
 
 La documentación del repositorio es la memoria compartida. Guarda hechos y decisiones útiles, no transcripciones, credenciales ni razonamientos internos. Al interrumpir una tarea, registra su estado y siguiente paso.

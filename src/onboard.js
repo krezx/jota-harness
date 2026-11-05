@@ -10,6 +10,12 @@ const DESTINATIONS = {
   codex: ".agents/skills/jota/SKILL.md",
   opencode: ".opencode/skills/jota/SKILL.md",
 };
+const SECURITY_SKILL_DESTINATIONS = {
+  agents: ".agents/skills/security-audit",
+  claude: ".claude/skills/security-audit",
+  codex: ".agents/skills/security-audit",
+  opencode: ".opencode/skills/security-audit",
+};
 const SHARED_FILES = [
   ["shared/JOTA.md", "JOTA.md"],
   ["shared/docs/PROJECT.md", "docs/PROJECT.md"],
@@ -27,6 +33,7 @@ export async function onboard({ requestedTargets, prompt, accept = false, dryRun
   const files = [...new Map([
     ...SHARED_FILES,
     ...targets.map((target) => ["skills/jota/SKILL.md", DESTINATIONS[target]]),
+    ...targets.flatMap((target) => securitySkillFiles(SECURITY_SKILL_DESTINATIONS[target])),
   ].map(([source, destination]) => [destination, [source, destination]])).values()];
   const entries = [...new Set(targets.map((target) => target === "claude" ? "CLAUDE.md" : "AGENTS.md"))];
   const block = "\n<!-- JOTA:START -->\n## JOTA\nAntes de programar, lee `JOTA.md` y `docs/PROJECT.md` en la raíz del proyecto.\nSigue el flujo y las bases de JOTA; registra decisiones, implementación y verificaciones en el registro de la tarea.\n<!-- JOTA:END -->\n";
@@ -78,6 +85,23 @@ export async function onboard({ requestedTargets, prompt, accept = false, dryRun
   }
   console.log("JOTA instalado. Completa docs/PROJECT.md con tu agente.");
   return 0;
+}
+
+function securitySkillFiles(destinationRoot) {
+  return [
+    ["skills/security-audit/SKILL.md", `${destinationRoot}/SKILL.md`],
+    ["skills/security-audit/UPSTREAM.txt", `${destinationRoot}/UPSTREAM.txt`],
+    ["skills/security-audit/LICENSE", `${destinationRoot}/LICENSE`],
+    ...[
+      "AI-AND-LLM.md", "ATTACK-CLASSES.md", "CLIENT-SIDE.md", "CLOUD-AND-DEPLOYMENT.md",
+      "DATA-ISOLATION-AND-LIFECYCLE.md", "DESKTOP-MOBILE-AND-LOCAL-IPC.md", "HUNTING.md",
+      "MEMORY-SAFETY-AND-BINARY.md", "PROTOCOLS-RPC-AND-MESSAGING.md", "RECONNAISSANCE.md",
+      "RESOURCE-EXHAUSTION-AND-AVAILABILITY.md", "SUPPLY-CHAIN-AND-RELEASE.md",
+      "VALIDATION-AND-REPORTING.md", "WEB-PROTOCOL-AND-AUTH.md", "report-schema.json",
+      "validate-coverage-ledger.cjs", "validate-coverage-ledger.test.cjs", "validate-findings.cjs",
+      "validate-findings.test.cjs",
+    ].map((file) => [`skills/security-audit/${file}`, `${destinationRoot}/${file}`]),
+  ];
 }
 
 async function chooseTargets(prompt, cwd) {
