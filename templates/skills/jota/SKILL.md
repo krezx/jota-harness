@@ -11,6 +11,6 @@ Consulta `docs/PROJECT.md` y el registro de la tarea relevante antes de modifica
 
 Si no existe `JOTA.md`, informa que JOTA no está configurado en ese proyecto; no inventes reglas ni instales archivos por activar esta skill.
 
-Para frontend desde cero, carga y sigue `modern-web-guidance` antes de escribir código. Si el frontend ya existe, audítalo con esa skill y presenta los hallazgos; pregunta si se desea actualizarlo y espera respuesta antes de modificarlo.
+Para frontend desde cero, carga y sigue `modern-web-guidance` antes de escribir código. Carga también `product-ux` para mantener coherentes los recorridos entre funcionalidades. Si el frontend ya existe, acuerda primero alcance y nivel de intervención y audítalo con ambas skills y presenta los hallazgos; pregunta si se desea actualizarlo y espera respuesta antes de modificarlo.
 
 Para cualquier pregunta, revisión o auditoría de seguridad, carga y sigue la skill `security-audit` incluida en el proyecto. En revisiones enfocadas usa solo las secciones pertinentes; ejecuta las seis fases únicamente ante una solicitud explícita de auditoría completa, pentest o informe, respetando sus límites de ejecución y alcance.

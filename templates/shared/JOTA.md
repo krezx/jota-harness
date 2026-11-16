@@ -42,7 +42,7 @@ Cuando el usuario solicite una revisión, auditoría o pregunta de seguridad sob
 
 ### Trabajo de frontend
 
-Para crear desde cero una interfaz web o frontend, carga y sigue la skill `modern-web-guidance` instalada en `.agents/skills/modern-web-guidance/`, `.claude/skills/modern-web-guidance/` o `.opencode/skills/modern-web-guidance/`, según el agente. Haz su búsqueda y recuperación de guías antes de escribir código frontend. Si el proyecto ya tiene frontend, audítalo primero con la skill y presenta los hallazgos; antes de actualizarlo, pregunta al usuario si desea que realices la actualización y espera su respuesta. No confundas una tarea de backend con trabajo de frontend.
+Para crear desde cero una interfaz web o frontend, carga y sigue la skill `modern-web-guidance` instalada en `.agents/skills/modern-web-guidance/`, `.claude/skills/modern-web-guidance/` o `.opencode/skills/modern-web-guidance/`, según el agente. Haz su búsqueda y recuperación de guías antes de escribir código frontend. Carga también `product-ux` para diseñar recorridos completos y mantener coherencia al añadir funcionalidades. Si el proyecto ya tiene frontend, acuerda con el usuario el alcance y nivel de intervención antes de auditarlo con ambas skills y presenta los hallazgos; antes de actualizarlo, pregunta al usuario si desea que realices la actualización y espera su respuesta. No confundas una tarea de backend con trabajo de frontend.
 
 ## Continuidad y límites
 

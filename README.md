@@ -73,3 +73,7 @@ npm test
 ```
 
 El repositorio es público para que el comando de instalación funcione sin credenciales. Aún no se publica el paquete en npm. Usa `github:krezx/jota-harness#v0.1.0` (o el tag de la versión elegida) en vez de la rama principal para fijar qué versión instalar. La acción de GitHub comprueba instalación limpia, tests y contenido del paquete para Node 20, 22 y 24.
+
+## UX de producto
+
+El instalador incluye la skill propia `product-ux` para crear interfaces y mantener recorridos completos al añadir funcionalidades. Complementa `modern-web-guidance` con objetivos del usuario, coherencia entre áreas, accesibilidad, estados y recuperación. Antes de una auditoría se acuerdan alcance y nivel de intervención: mejoras menores, reorganización de flujos o evaluación de reconstrucción. El informe distingue evidencia de hipótesis; auditar no autoriza modificar. No usa puntuaciones globales ni promete satisfacción sin evidencia de usuarios.

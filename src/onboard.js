@@ -38,13 +38,15 @@ export async function onboard({ requestedTargets, prompt, accept = false, dryRun
 
   const files = [...new Map([
     ...SHARED_FILES,
+    ...targets.flatMap((target) => ["SKILL.md", "references/audit.md", "references/principles.md"].map((file) =>
+      [`skills/product-ux/${file}`, `${path.posix.dirname(path.posix.dirname(DESTINATIONS[target]))}/product-ux/${file}`])),
     ...targets.map((target) => ["skills/jota/SKILL.md", DESTINATIONS[target]]),
     ...targets.flatMap((target) => securitySkillFiles(SECURITY_SKILL_DESTINATIONS[target])),
     ...(await Promise.all([...new Set(targets.map((target) => MODERN_WEB_SKILL_DESTINATIONS[target]))]
       .map((destination) => modernWebSkillFiles(destination)))).flat(),
   ].map(([source, destination]) => [destination, [source, destination]])).values()];
   const entries = [...new Set(targets.map((target) => target === "claude" ? "CLAUDE.md" : "AGENTS.md"))];
-  const block = "\n<!-- JOTA:START -->\n## JOTA\nAntes de programar, lee `JOTA.md` y `docs/PROJECT.md` en la raíz del proyecto.\nSigue el flujo y las bases de JOTA; registra decisiones, implementación y verificaciones en el registro de la tarea.\nPara crear frontend desde cero, carga y sigue `modern-web-guidance` antes de escribir código. En proyectos con frontend existente, audítalo primero con esa skill y presenta los hallazgos; pregunta si se desea actualizarlo y espera respuesta antes de modificarlo.\n<!-- JOTA:END -->\n";
+  const block = "\n<!-- JOTA:START -->\n## JOTA\nAntes de programar, lee `JOTA.md` y `docs/PROJECT.md` en la raíz del proyecto.\nSigue el flujo y las bases de JOTA; registra decisiones, implementación y verificaciones en el registro de la tarea.\nPara crear frontend desde cero, carga y sigue `modern-web-guidance` antes de escribir código. Carga también `product-ux` para preservar recorridos completos. En proyectos con frontend existente, acuerda primero alcance y nivel de intervención con el usuario, audítalo primero con ambas skills y presenta los hallazgos; pregunta si se desea actualizarlo y espera respuesta antes de modificarlo.\n<!-- JOTA:END -->\n";
   const entryContents = new Map();
   for (const destination of [...files.map(([, destination]) => destination), ...entries]) {
     await validatePath(cwd, destination);

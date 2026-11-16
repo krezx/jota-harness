@@ -39,6 +39,12 @@ test("installs all adapters once and preserves existing agent instructions", asy
   assert.match(await readFile(path.join(cwd, "JOTA.md"), "utf8"), /revisiones de seguridad/i);
   assert.match(await readFile(path.join(cwd, ".agents/skills/security-audit/SKILL.md"), "utf8"), /Full audit workflow/);
   assert.match(await readFile(path.join(cwd, ".agents/skills/modern-web-guidance/SKILL.md"), "utf8"), /MANDATORY: Execute FIRST/);
+  for (const adapter of [".agents", ".claude", ".opencode"]) {
+    for (const file of ["SKILL.md", "references/audit.md", "references/principles.md"]) {
+      assert.equal(await readFile(path.join(cwd, adapter, "skills/product-ux", file), "utf8"),
+        await readFile(new URL(`../templates/skills/product-ux/${file}`, import.meta.url), "utf8"));
+    }
+  }
   const agents = await readFile(path.join(cwd, "AGENTS.md"), "utf8");
   assert.ok(agents.startsWith("Regla del usuario\n"));
   assert.match(agents, /audítalo primero/);
@@ -131,6 +137,7 @@ test("installs and runs from a Git package URL in a separate consumer project", 
   await assert.rejects(access(path.join(consumer, "JOTA.md")));
   result = npm("onboard", "--target=agents", "--yes");
   assert.equal(result.status, 0, result.stderr);
+  await access(path.join(consumer, ".agents/skills/product-ux/references/audit.md"));
   assert.match(await readFile(path.join(consumer, "AGENTS.md"), "utf8"), /JOTA:START/);
   assert.match(await readFile(path.join(consumer, "JOTA.md"), "utf8"), /15 principios/);
   assert.match(await readFile(path.join(consumer, ".agents/skills/security-audit/SKILL.md"), "utf8"), /# Security Audit/);
