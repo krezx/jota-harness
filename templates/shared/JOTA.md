@@ -40,6 +40,10 @@ Si el contexto está incompleto, inspecciona el proyecto y completa los hechos c
 
 Cuando el usuario solicite una revisión, auditoría o pregunta de seguridad sobre código, carga y sigue la skill `security-audit` instalada en `.agents/skills/security-audit/`, `.claude/skills/security-audit/` o `.opencode/skills/security-audit/`, según el agente. Úsala también en modo de orientación para revisiones enfocadas; reserva el flujo completo de seis fases para auditorías explícitas o solicitudes de informe, tal como define la skill. Si no está instalada, usa el repositorio oficial https://github.com/cloudflare/security-audit-skill como referencia y explica que la skill local falta.
 
+### Trabajo de frontend
+
+Para crear desde cero una interfaz web o frontend, carga y sigue la skill `modern-web-guidance` instalada en `.agents/skills/modern-web-guidance/`, `.claude/skills/modern-web-guidance/` o `.opencode/skills/modern-web-guidance/`, según el agente. Haz su búsqueda y recuperación de guías antes de escribir código frontend. Si el proyecto ya tiene frontend, audítalo primero con la skill y presenta los hallazgos; antes de actualizarlo, pregunta al usuario si desea que realices la actualización y espera su respuesta. No confundas una tarea de backend con trabajo de frontend.
+
 ## Continuidad y límites
 
 La documentación del repositorio es la memoria compartida. Guarda hechos y decisiones útiles, no transcripciones, credenciales ni razonamientos internos. Al interrumpir una tarea, registra su estado y siguiente paso.

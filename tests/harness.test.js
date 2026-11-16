@@ -29,13 +29,20 @@ test("installs all adapters once and preserves existing agent instructions", asy
   for (const file of ["JOTA.md", "docs/PROJECT.md", "docs/features/TEMPLATE.md", "jota.config.json",
     ".claude/skills/jota/SKILL.md", ".agents/skills/jota/SKILL.md", ".opencode/skills/jota/SKILL.md",
     ".claude/skills/security-audit/SKILL.md", ".agents/skills/security-audit/SKILL.md",
-    ".opencode/skills/security-audit/SKILL.md", ".agents/skills/security-audit/HUNTING.md", "CLAUDE.md"]) {
+    ".opencode/skills/security-audit/SKILL.md", ".agents/skills/security-audit/HUNTING.md",
+    ".claude/skills/modern-web-guidance/SKILL.md", ".agents/skills/modern-web-guidance/SKILL.md",
+    ".opencode/skills/modern-web-guidance/SKILL.md",
+    ".agents/skills/modern-web-guidance/guides/css/css.md",
+    ".agents/skills/modern-web-guidance/LICENSE", ".agents/skills/modern-web-guidance/UPSTREAM.txt", "CLAUDE.md"]) {
     await access(path.join(cwd, file));
   }
   assert.match(await readFile(path.join(cwd, "JOTA.md"), "utf8"), /revisiones de seguridad/i);
   assert.match(await readFile(path.join(cwd, ".agents/skills/security-audit/SKILL.md"), "utf8"), /Full audit workflow/);
+  assert.match(await readFile(path.join(cwd, ".agents/skills/modern-web-guidance/SKILL.md"), "utf8"), /MANDATORY: Execute FIRST/);
   const agents = await readFile(path.join(cwd, "AGENTS.md"), "utf8");
   assert.ok(agents.startsWith("Regla del usuario\n"));
+  assert.match(agents, /audítalo primero/);
+  assert.match(agents, /espera respuesta antes de modificarlo/);
   assert.equal(agents.split("<!-- JOTA:START -->").length, 2);
   assert.notEqual(run(cwd, "onboard", "--target=codex", "--yes").status, 0);
   assert.equal(await readFile(path.join(cwd, "AGENTS.md"), "utf8"), agents);
@@ -127,4 +134,5 @@ test("installs and runs from a Git package URL in a separate consumer project", 
   assert.match(await readFile(path.join(consumer, "AGENTS.md"), "utf8"), /JOTA:START/);
   assert.match(await readFile(path.join(consumer, "JOTA.md"), "utf8"), /15 principios/);
   assert.match(await readFile(path.join(consumer, ".agents/skills/security-audit/SKILL.md"), "utf8"), /# Security Audit/);
+  assert.match(await readFile(path.join(consumer, ".agents/skills/modern-web-guidance/SKILL.md"), "utf8"), /# Modern Web Guidance/);
 });

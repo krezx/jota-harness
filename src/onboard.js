@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile, appendFile, lstat } from "node:fs/promises";
+import { mkdir, readFile, writeFile, appendFile, lstat, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -15,6 +15,12 @@ const SECURITY_SKILL_DESTINATIONS = {
   claude: ".claude/skills/security-audit",
   codex: ".agents/skills/security-audit",
   opencode: ".opencode/skills/security-audit",
+};
+const MODERN_WEB_SKILL_DESTINATIONS = {
+  agents: ".agents/skills/modern-web-guidance",
+  claude: ".claude/skills/modern-web-guidance",
+  codex: ".agents/skills/modern-web-guidance",
+  opencode: ".opencode/skills/modern-web-guidance",
 };
 const SHARED_FILES = [
   ["shared/JOTA.md", "JOTA.md"],
@@ -34,9 +40,11 @@ export async function onboard({ requestedTargets, prompt, accept = false, dryRun
     ...SHARED_FILES,
     ...targets.map((target) => ["skills/jota/SKILL.md", DESTINATIONS[target]]),
     ...targets.flatMap((target) => securitySkillFiles(SECURITY_SKILL_DESTINATIONS[target])),
+    ...(await Promise.all([...new Set(targets.map((target) => MODERN_WEB_SKILL_DESTINATIONS[target]))]
+      .map((destination) => modernWebSkillFiles(destination)))).flat(),
   ].map(([source, destination]) => [destination, [source, destination]])).values()];
   const entries = [...new Set(targets.map((target) => target === "claude" ? "CLAUDE.md" : "AGENTS.md"))];
-  const block = "\n<!-- JOTA:START -->\n## JOTA\nAntes de programar, lee `JOTA.md` y `docs/PROJECT.md` en la raíz del proyecto.\nSigue el flujo y las bases de JOTA; registra decisiones, implementación y verificaciones en el registro de la tarea.\n<!-- JOTA:END -->\n";
+  const block = "\n<!-- JOTA:START -->\n## JOTA\nAntes de programar, lee `JOTA.md` y `docs/PROJECT.md` en la raíz del proyecto.\nSigue el flujo y las bases de JOTA; registra decisiones, implementación y verificaciones en el registro de la tarea.\nPara crear frontend desde cero, carga y sigue `modern-web-guidance` antes de escribir código. En proyectos con frontend existente, audítalo primero con esa skill y presenta los hallazgos; pregunta si se desea actualizarlo y espera respuesta antes de modificarlo.\n<!-- JOTA:END -->\n";
   const entryContents = new Map();
   for (const destination of [...files.map(([, destination]) => destination), ...entries]) {
     await validatePath(cwd, destination);
@@ -102,6 +110,19 @@ function securitySkillFiles(destinationRoot) {
       "validate-findings.test.cjs",
     ].map((file) => [`skills/security-audit/${file}`, `${destinationRoot}/${file}`]),
   ];
+}
+
+async function modernWebSkillFiles(destinationRoot) {
+  const sourceRoot = path.join(ROOT, "skills/modern-web-guidance");
+  const collect = async (relative = "") => {
+    const directory = path.join(sourceRoot, relative);
+    const entries = await readdir(directory, { withFileTypes: true });
+    return (await Promise.all(entries.map(async (entry) => {
+      const child = path.posix.join(relative, entry.name);
+      return entry.isDirectory() ? collect(child) : [[`skills/modern-web-guidance/${child}`, `${destinationRoot}/${child}`]];
+    }))).flat();
+  };
+  return collect();
 }
 
 async function chooseTargets(prompt, cwd) {

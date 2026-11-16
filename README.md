@@ -35,6 +35,8 @@ El instalador pone una base común, contexto, registro de trabajo y comandos de 
 
 También instala la skill `security-audit` de [Cloudflare](https://github.com/cloudflare/security-audit-skill) en el directorio de skills del agente. JOTA instruye al agente a usarla siempre ante preguntas o revisiones de seguridad, con el modo enfocado o auditoría completa según la solicitud. Se conserva junto con sus archivos auxiliares y licencia MIT; la copia incluida registra el commit de origen.
 
+También instala `modern-web-guidance` de [GoogleChrome](https://github.com/GoogleChrome/modern-web-guidance) y sus guías locales con licencia Apache-2.0. Para frontend desde cero, JOTA exige seguir esa skill antes de escribir código. En un proyecto con frontend existente, primero se audita y se presentan hallazgos; el agente pregunta antes de actualizar.
+
 Luego el agente debe configurar las verificaciones según el stack del proyecto. JOTA incluye las plantillas y `jota verify`; la instalación no inventa comandos que el proyecto no tenga.
 
 ## Comprobaciones
